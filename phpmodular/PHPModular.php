@@ -17,22 +17,22 @@ class PHPModular{
 	private $dom;
 
 	/** 
-	 * @var Paths to be use where module is situated 
+	 * @var $paths to be use where module is situated
 	 */
 	private $paths = [];
 
 	/** 
-	 * @var Current Nodes to be loaded 
+	 * @var $current Nodes to be loaded
 	 */
 	private $current = [];
 
 	/** 
-	 * @var Next Page Nodes to be loaded 
+	 * @var $next Page Nodes to be loaded
 	 */
 	private $next = [];
 
 	/** 
-	 * @var last Page Nodes loaded
+	 * @var $previus Page Nodes loaded
 	 */
 	private $previus = [];
 
