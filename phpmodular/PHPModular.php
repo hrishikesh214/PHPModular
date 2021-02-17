@@ -11,30 +11,30 @@
 class PHPModular{
 
 	/** 
-	 * @var $dom DOMDocument holding obj
+	 * @var DOMDocument $dom holding obj
 	 *
 	 */
-	private $dom;
+	private DOMDocument $dom;
 
 	/** 
-	 * @var $paths to be use where module is situated
+	 * @var Array $paths to be use where module is situated
 	 */
-	private $paths = [];
+	private Array  $paths = [];
 
 	/** 
-	 * @var $current Nodes to be loaded
+	 * @var Array $current Nodes to be loaded
 	 */
-	private $current = [];
+	private Array $current = [];
 
 	/** 
-	 * @var $next Page Nodes to be loaded
+	 * @var Array $next Page Nodes to be loaded
 	 */
-	private $next = [];
+	private Array $next = [];
 
 	/** 
-	 * @var $previus Page Nodes loaded
+	 * @var array $previus Page Nodes loaded
 	 */
-	private $previus = [];
+	private array $previus = [];
 
 	/**
 	 *----------------------------------------------------------
@@ -54,11 +54,12 @@ class PHPModular{
 	 * Function load
 	 * Sets current nodes to be loaded
 	 * @param String $node the node to added
-	 * @param Array $vars parameters to be passed
+	 * @param Array $props parameters to be passed
+     * @param String $name unique name to node
 	 *
 	 *----------------------------------------------------------
 	 */
-	public function load($node, $vars){
+	public function load(String $node, Array $props, String $name){
 		$files = [];
 		# load all file paths from all paths array in array
 		foreach($this->paths as $path){
@@ -80,7 +81,7 @@ class PHPModular{
 		#now search for node
 		if( function_exists($node) ){
 			# now extract properties if exists
-			array_push($this->current, $node($vars));
+			array_push($this->current, ['name' => $name, 'value' => $node($props)]);
 		}
 		else{
 			die("Module with name {$node} not found!"); #throw if node not found
@@ -93,12 +94,16 @@ class PHPModular{
 	 *
 	 * Function unload
 	 * Unset a current node
-	 * @param String $node unsets from current tree
+	 * @param String $name unsets from current tree
 	 *
 	 *----------------------------------------------------------
 	 */
-	public function unload($node){
-		unset($this->current[$node]);
+	public function unload(String $name){
+	    for($i = 0; $i < sizeof($this->current); $i++){
+	        if( $this->current[$i]['name'] == $name ){
+                unset($this->current[$i]);
+            }
+        }
 	}
 
 	/**
@@ -110,9 +115,12 @@ class PHPModular{
 	 *----------------------------------------------------------
 	 */
 	public function render(){
+	    if (sizeof($this->current) == 0){
+	        return NULL;
+        }
 		$_output = "";
 		foreach($this->current as $node){
-			$_output .= $node;
+			$_output .= $node['value'];
 		}
 		$this->dom->loadHTML($_output);
 		echo $this->dom->saveHTML();

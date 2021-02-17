@@ -10,7 +10,7 @@ $modular = new PHPModular();
 
 $modular->use(__dir__.'/mymodules');
 
-$modular->load('mod1', ['name' => 'John', 'color' => 'pink']);
-$modular->load('mod1', ['name' => 'Hrishikesh', 'color' => 'orange']);
-// $modular->unload('mod 1');
+$modular->load('profile', ['name' => 'hrishikesh', 'desc'=>'hi there'], name: 'n1');
+$modular->load('profile', ['name' => 'hrishi', 'desc'=>'hi hellllo'], name: 'n2');
+//$modular->unload('n1');
 $modular->render();
